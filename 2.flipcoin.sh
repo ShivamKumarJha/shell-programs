@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
+if [ -z "$1" ] ; then
+    read -p "Number of times to Flip the Coin?" n
+else
+    n="$1"
+fi
+
 heads=0
 tails=0
-read -p "Number of times to Flip the Coin?" n
+
 if [[ n -gt 0 ]]; then
     for ((i=1;i<=${n};i++)); do
         COIN=$(shuf -i 0-1 -n 1)
