@@ -25,3 +25,7 @@ done
 
 # sort coupons list
 sort -n -o coupons.txt coupons.txt
+
+# display coupons generated
+echo "Generated coupons:"
+cat coupons.txt
