@@ -31,7 +31,6 @@ while [[ 1 -gt 0 ]]; do
     if [[ ${sq[$index]} != "X" ]] && [[ ${sq[$index]} != "O" ]]; then
         sq[$index]="O"
     else
-        echo "Already has data. Repeating"
         continue
     fi
     printboard
