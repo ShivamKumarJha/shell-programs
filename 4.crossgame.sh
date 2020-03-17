@@ -13,3 +13,12 @@ printboard() {
     done
 }
 
+while [[ 1 -gt 0 ]]; do
+    printboard
+    read -p "Enter choice: " ch
+    sq[$ch]="X"
+    comp=$(shuf -i 1-9 -n 1)
+    echo "AI: $comp"
+    sq[$comp]="O"
+    printboard
+done
