@@ -1,15 +1,23 @@
 #!/bin/bash
 
+winneris() {
+	if [ "$turn" -eq 1 ]; then
+		printf "User won.\n"
+	else
+		printf "Computer won.\n"
+	fi
+}
+
 #function to continually re draw the board after a move is made
 drawBoard(){
 	for ((i=1;i<=num_rows;i++)) do
 		for ((j=1;j<=num_columns;j++)) do
 		printf "|"
-		if [ ${matrix[$i,$j]} -eq 0 ]; then
+		if [ ${matrix[$i,$j]} -eq 0 ]; then # default initilized as 0
 			printf " "
-		elif [ ${matrix[$i,$j]} -eq 1 ]; then
+		elif [ ${matrix[$i,$j]} -eq 1 ]; then # user
 			printf "O"
-		elif [ ${matrix[$i,$j]} -eq 2 ]; then
+		elif [ ${matrix[$i,$j]} -eq 2 ]; then # computer
 			printf "X"
 		fi
 		done
@@ -45,11 +53,7 @@ winCheck(){
 	for ((i=1;i<=num_rows;i++)) do
 		if [ ${matrix[$i,1]} -eq "$turn" ] && [ ${matrix[$i,2]} -eq "$turn" ] && [ ${matrix[$i,3]} -eq "$turn" ]; then
 			WIN=1
-			if [ "$turn" -eq 1 ]; then
-				printf "Congratulations human, you have won.\n"
-			else
-				printf "Better luck next time, human.\n"
-			fi
+            winneris
 			return
 		fi
 
@@ -59,31 +63,19 @@ winCheck(){
 	for ((i=1;i<=num_columns;i++)) do
 		if [ ${matrix[1,$i]} -eq "$turn" ] && [ ${matrix[2,$i]} -eq "$turn" ] && [ ${matrix[3,$i]} -eq "$turn" ]; then
 			WIN=1
-			if [ "$turn" -eq 1 ]; then
-				printf "User won.\n"
-			else
-				printf "Computer won.\n"
-			fi
+			winneris
 			return
 		fi
 
 	done
 
-	#check diagnols
+	#check diagnals
 	if [ ${matrix[1,1]} -eq "$turn" ] && [ ${matrix[2,2]} -eq "$turn" ] && [ ${matrix[3,3]} -eq "$turn" ]; then
-		if [ "$turn" -eq 1 ]; then
-			printf "User won.\n"
-		else
-			printf "Computer won.\n"
-		fi
+		winneris
 		WIN=1
 		return
 	elif [ ${matrix[1,3]} -eq "$turn" ] && [ ${matrix[2,2]} -eq "$turn" ] && [ ${matrix[3,1]} -eq "$turn" ]; then
-		if [ "$turn" -eq 1 ]; then
-			printf "User won.\n"
-		else
-			printf "Computer won.\n"
-		fi
+		winneris
 		WIN=1
 		return
 	fi
@@ -143,7 +135,7 @@ while [  $WIN = 0 ]; do
 			drawBoard
 		fi
 	else
-		printf "Try again, human.\n"
+		printf "Try again.\n"
 	fi
 	check=0
 done
