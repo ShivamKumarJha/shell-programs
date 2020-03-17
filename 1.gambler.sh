@@ -20,7 +20,7 @@ fi
 win=0
 loss=0
 totalgambles=0
-while [[ ! "$stake" == 0 ]] || [[ ! "$stake" == "$goal" ]]; do
+while [[ 1 -gt 0 ]]; do
     gamble=$(shuf -i 0-1 -n 1) # random of 0,1
     totalgambles=$(( $totalgambles + 1 ))
     if [[ "$gamble" == 0 ]]; then
