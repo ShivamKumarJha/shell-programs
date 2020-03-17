@@ -1,56 +1,149 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-declare -a sq
-index=0
-for ((i=1;i<=9;i++)); do
-    sq[$i]=$i
-done
-
-printboard() {
-    echo "---------------------"
-    for ((i=1;i<=9;i++)); do
-        printf "|  ${sq[$i]}  |"
-        [[ $(( $i % 3 )) == 0 ]] && echo -e "\n---------------------"
-    done
+#function to continually re draw the board after a move is made
+drawBoard(){
+	for ((i=1;i<=num_rows;i++)) do
+		for ((j=1;j<=num_columns;j++)) do
+		printf "|"
+		if [ ${matrix[$i,$j]} -eq 0 ]; then
+			printf " "
+		elif [ ${matrix[$i,$j]} -eq 1 ]; then
+			printf "O"
+		elif [ ${matrix[$i,$j]} -eq 2 ]; then
+			printf "X"
+		fi
+		done
+		printf "|"
+	printf "\n"
+	done
 }
 
-while [[ 1 -gt 0 ]]; do
-    printboard
-    # user i/p
-    read -p "Enter choice: " ch
-    index=$ch
-    if [[ ${sq[$index]} != "X" ]] && [[ ${sq[$index]} != "O" ]]; then
-        sq[$index]="X"
-    else
-        echo "Already has data. Repeating"
-        continue
-    fi
-    # computer choice
-    comp=$(shuf -i 1-9 -n 1)
-    index=$comp
-    if [[ ${sq[$index]} != "X" ]] && [[ ${sq[$index]} != "O" ]]; then
-        sq[$index]="O"
-    else
-        continue
-    fi
-    printboard
-    # win conditions
-    wr1="${sq[1]} ${sq[2]} ${sq[3]}"
-    wr2="${sq[4]} ${sq[5]} ${sq[6]}"
-    wr3="${sq[7]} ${sq[8]} ${sq[9]}"
-    wc1="${sq[1]} ${sq[4]} ${sq[7]}"
-    wc2="${sq[2]} ${sq[5]} ${sq[8]}"
-    wc3="${sq[3]} ${sq[6]} ${sq[9]}"
-    wd1="${sq[1]} ${sq[5]} ${sq[9]}"
-    wd2="${sq[3]} ${sq[5]} ${sq[7]}"
-    winx="X X X"
-    wino="O O O"
-    if [ "$wr1" = "$winx" -o "$wr2" = "$winx" -o "$wr3" = "$winx" -o "$wc1" = "$winx" -o "$wc2" = "$winx" -o "$wc3" = "$winx" -o "$wd1" = "$winx" -o "$wd2" = "$winx" ]; then
-        echo "User wins!"
-        break
-    fi
-    if [ "$wr1" = "$wino" -o "$wr2" = "$wino" -o "$wr3" = "$wino" -o "$wc1" = "$wino" -o "$wc2" = "$wino" -o "$wc3" = "$wino" -o "$wd1" = "$wino" -o "$wd2" = "$wino" ]; then
-        echo "Computer wins!"
-        break
-    fi
+#check if move is legal
+fillCheck(){
+	if [ "$X" -le "$num_rows" ] && [ "$X" -gt 0 ]; then
+		if [ "$Y" -le "$num_columns" ] && [ "$Y" -gt 0 ]; then
+			if [ ${matrix[$X,$Y]} -eq 0 ]; then
+				matrix[$X,$Y]=1
+				tieCheck=$((tieCheck+1))
+				check=1
+			else
+				printf "Position $X $Y is already taken! Retry\n"
+				check=0		
+			fi
+		else
+			printf "Invalid column number entered, please enter a position from 1-3.\n"
+			check=0
+		fi
+	else
+		printf "Invalid row number entered, please enter a position from 1-3.\n"
+		check=0
+	fi
+}
+#check the board for a winner
+winCheck(){
+	#check rows
+	for ((i=1;i<=num_rows;i++)) do
+		if [ ${matrix[$i,1]} -eq "$turn" ] && [ ${matrix[$i,2]} -eq "$turn" ] && [ ${matrix[$i,3]} -eq "$turn" ]; then
+			WIN=1
+			if [ "$turn" -eq 1 ]; then
+				printf "Congratulations human, you have won.\n"
+			else
+				printf "Better luck next time, human.\n"
+			fi
+			return
+		fi
+
+	done
+
+	#check columns
+	for ((i=1;i<=num_columns;i++)) do
+		if [ ${matrix[1,$i]} -eq "$turn" ] && [ ${matrix[2,$i]} -eq "$turn" ] && [ ${matrix[3,$i]} -eq "$turn" ]; then
+			WIN=1
+			if [ "$turn" -eq 1 ]; then
+				printf "User won.\n"
+			else
+				printf "Computer won.\n"
+			fi
+			return
+		fi
+
+	done
+
+	#check diagnols
+	if [ ${matrix[1,1]} -eq "$turn" ] && [ ${matrix[2,2]} -eq "$turn" ] && [ ${matrix[3,3]} -eq "$turn" ]; then
+		if [ "$turn" -eq 1 ]; then
+			printf "User won.\n"
+		else
+			printf "Computer won.\n"
+		fi
+		WIN=1
+		return
+	elif [ ${matrix[1,3]} -eq "$turn" ] && [ ${matrix[2,2]} -eq "$turn" ] && [ ${matrix[3,1]} -eq "$turn" ]; then
+		if [ "$turn" -eq 1 ]; then
+			printf "User won.\n"
+		else
+			printf "Computer won.\n"
+		fi
+		WIN=1
+		return
+	fi
+	
+	#check for a tie
+	if [ "$tieCheck" -eq 9 ]; then
+		WIN=1
+		printf "Tie Game\n"
+		return
+	fi
+	
+}
+
+#opponent finds a random empty square and fills it
+opponentTurn(){
+	while [  "$turn" -eq 1 ]; do
+		oppX=$((RANDOM%3+1))
+		oppY=$((RANDOM%3+1))
+		if [ ${matrix[$oppX,$oppY]} -eq 0 ]; then
+			matrix[$oppX,$oppY]=2
+			tieCheck=$((tieCheck+1))
+			turn=2
+		fi
+	done
+	
+}
+
+#declaration of a 3x3 array to act as the game board
+declare -A matrix
+num_rows=3
+num_columns=3
+WIN=0 #keep 0 until win
+check=0 #keep 0 until legal move is made by player
+turn=1 #keep track of whose turn it is
+tieCheck=0 #keep track of the number of moves made so far in case of a tie
+
+for ((i=1;i<=num_rows;i++)) do
+    for ((j=1;j<=num_columns;j++)) do
+        matrix[$i,$j]=0
+    done
+done
+
+drawBoard
+
+#main game loop
+while [  $WIN = 0 ]; do
+	printf "Enter your space as 'row column' e.g. 1 1\n"
+	read X Y
+	fillCheck
+	if [ "$check" -eq 1 ]; then
+		winCheck
+		drawBoard
+		if [ $WIN = 0 ]; then
+			opponentTurn
+			winCheck
+			turn=1
+			drawBoard
+		fi
+	else
+		printf "Try again, human.\n"
+	fi
+	check=0
 done
