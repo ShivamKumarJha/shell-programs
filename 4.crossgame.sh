@@ -35,70 +35,23 @@ while [[ 1 -gt 0 ]]; do
         continue
     fi
     printboard
-    # win conditions for computer
-    if [[ ${sq[1]} == "O" ]] && [[ ${sq[2]} == "O" ]] && [[ ${sq[3]} == "O" ]]; then
-        echo "Compter wins!"
+    # win conditions
+    wr1="${sq[1]} ${sq[2]} ${sq[3]}"
+    wr2="${sq[4]} ${sq[5]} ${sq[6]}"
+    wr3="${sq[7]} ${sq[8]} ${sq[9]}"
+    wc1="${sq[1]} ${sq[4]} ${sq[7]}"
+    wc2="${sq[2]} ${sq[5]} ${sq[8]}"
+    wc3="${sq[3]} ${sq[6]} ${sq[9]}"
+    wd1="${sq[1]} ${sq[5]} ${sq[9]}"
+    wd2="${sq[3]} ${sq[5]} ${sq[7]}"
+    winx="X X X"
+    wino="O O O"
+    if [ "$wr1" = "$winx" -o "$wr2" = "$winx" -o "$wr3" = "$winx" -o "$wc1" = "$winx" -o "$wc2" = "$winx" -o "$wc3" = "$winx" -o "$wd1" = "$winx" -o "$wd2" = "$winx" ]; then
+        echo "User wins!"
         break
     fi
-    if [[ ${sq[4]} == "O" ]] && [[ ${sq[5]} == "O" ]] && [[ ${sq[6]} == "O" ]]; then
-        echo "Compter wins!"
-        break
-    fi
-    if [[ ${sq[7]} == "O" ]] && [[ ${sq[8]} == "O" ]] && [[ ${sq[9]} == "O" ]]; then
-        echo "Compter wins!"
-        break
-    fi
-    if [[ ${sq[1]} == "O" ]] && [[ ${sq[4]} == "O" ]] && [[ ${sq[7]} == "O" ]]; then
-        echo "Compter wins!"
-        break
-    fi
-    if [[ ${sq[2]} == "O" ]] && [[ ${sq[5]} == "O" ]] && [[ ${sq[8]} == "O" ]]; then
-        echo "Compter wins!"
-        break
-    fi
-    if [[ ${sq[3]} == "O" ]] && [[ ${sq[6]} == "O" ]] && [[ ${sq[9]} == "O" ]]; then
-        echo "Compter wins!"
-        break
-    fi
-    if [[ ${sq[1]} == "O" ]] && [[ ${sq[5]} == "O" ]] && [[ ${sq[9]} == "O" ]]; then
+    if [ "$wr1" = "$wino" -o "$wr2" = "$wino" -o "$wr3" = "$wino" -o "$wc1" = "$wino" -o "$wc2" = "$wino" -o "$wc3" = "$wino" -o "$wd1" = "$wino" -o "$wd2" = "$wino" ]; then
         echo "Computer wins!"
-        break
-    fi
-    if [[ ${sq[3]} == "O" ]] && [[ ${sq[5]} == "O" ]] && [[ ${sq[7]} == "O" ]]; then
-        echo "Computer wins!"
-        break
-    fi
-    # win conditions for user
-    if [[ ${sq[1]} == "X" ]] && [[ ${sq[2]} == "X" ]] && [[ ${sq[3]} == "X" ]]; then
-        echo "User wins!"
-        break
-    fi
-    if [[ ${sq[4]} == "X" ]] && [[ ${sq[5]} == "X" ]] && [[ ${sq[6]} == "X" ]]; then
-        echo "User wins!"
-        break
-    fi
-    if [[ ${sq[7]} == "X" ]] && [[ ${sq[8]} == "X" ]] && [[ ${sq[9]} == "X" ]]; then
-        echo "User wins!"
-        break
-    fi
-    if [[ ${sq[1]} == "X" ]] && [[ ${sq[4]} == "X" ]] && [[ ${sq[7]} == "X" ]]; then
-        echo "User wins!"
-        break
-    fi
-    if [[ ${sq[2]} == "X" ]] && [[ ${sq[5]} == "X" ]] && [[ ${sq[8]} == "X" ]]; then
-        echo "User wins!"
-        break
-    fi
-    if [[ ${sq[3]} == "X" ]] && [[ ${sq[6]} == "X" ]] && [[ ${sq[9]} == "X" ]]; then
-        echo "User wins!"
-        break
-    fi
-    if [[ ${sq[1]} == "X" ]] && [[ ${sq[5]} == "X" ]] && [[ ${sq[9]} == "X" ]]; then
-        echo "User wins!"
-        break
-    fi
-    if [[ ${sq[3]} == "X" ]] && [[ ${sq[5]} == "X" ]] && [[ ${sq[7]} == "X" ]]; then
-        echo "User wins!"
         break
     fi
 done
