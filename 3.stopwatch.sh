@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash -x
 
 read -p "Start? " starttime
 SECONDS=0

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash -x
 
 winneris() {
 	if [ "$turn" -eq 1 ]; then
