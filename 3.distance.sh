@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash -x
 
 read -p "Enter Value of x:" x
 read -p "Enter Value of y:" y

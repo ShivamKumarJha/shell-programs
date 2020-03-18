@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash -x
 
 read -p "Enter the Temperature from 0 to 50: " temperature
 

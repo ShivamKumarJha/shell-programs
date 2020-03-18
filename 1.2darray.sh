@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash -x
 
 read -p "Enter no. of rows: " rows
 read -p "Enter no. of columns: " cols
