@@ -6,7 +6,7 @@ else
     num="$1"
 fi
 
-rm -rf coupons.txt
+array=()
 count=0
 distinct=0
 while [[ $distinct -lt $num ]]; do
@@ -14,20 +14,17 @@ while [[ $distinct -lt $num ]]; do
     value=$(awk "BEGIN {print ($randnum*($num-1))}")
     echo "Random Number Generated: $value"
     count=$(( $count + 1 ))
-    if cat coupons.txt |  grep "^$value"; then
+    if [[ " ${array[@]} " =~ " ${value} " ]]; then
         echo "Old value. Skipping."
     else
-        echo "New value. Writing..."
-        echo $value >> coupons.txt
+        echo "New value. Adding..."
+        array+=($value)
         distinct=$(( $distinct + 1 ))
     fi
 done
-
-# sort coupons list
-sort -n -o coupons.txt coupons.txt
 
 # display coupons generated
 echo "$count coupons generated."
 echo "$distinct distinct coupons generated."
 echo "Generated coupons:"
-cat coupons.txt
+echo ${array[@]}
