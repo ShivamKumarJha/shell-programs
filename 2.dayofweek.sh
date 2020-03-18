@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash -x
 
 if [ -z "$3" ]; then
     echo "Enter 3 args as <month> <date> <year>!"

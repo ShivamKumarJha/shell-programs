@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash -x
 
 while [[ 1 -gt 0 ]]; do
     printf "\n1. Celsius to Fahrenheit\n2. Fahrenheit to Celsius\n"

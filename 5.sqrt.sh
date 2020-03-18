@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash -x
 
 if [ -z "$1" ]; then
     read -p "Enter the number: " num
