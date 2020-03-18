@@ -27,5 +27,7 @@ done
 sort -n -o coupons.txt coupons.txt
 
 # display coupons generated
+echo "$count coupons generated."
+echo "$distinct distinct coupons generated."
 echo "Generated coupons:"
 cat coupons.txt
